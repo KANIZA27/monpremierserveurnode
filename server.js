@@ -46,7 +46,7 @@ server.listen(numPort, () =>{
     // pour renvoie le message de réponse,"res" utilise la méthode "end()".
     res.end("Bonjour, je suis le serveur.");
 
-});*/
+}); */
 
 // Ici, le serveur est disponible sur le port 3000.
 //server.listen(3000);

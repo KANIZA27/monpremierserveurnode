@@ -1,13 +1,14 @@
 // Ici, j'ai import du frameword ExpressJs
 // j'import express from "express";
 const express = require ("express");
+const url = require("url");
 
 // je crée l'application ExpressJs
 const app = express();
 
 // Ici, le serveur il va retourne la réponse ci-dessous peu importe la requête
 // qu'on va lui donnée c'est "même" la reponse par défaut.
-/*app.use((req, res)=> {
+/* app.use((req, res)=> {
     res.json({message : "Votre messsage a bien été reçu"});
 });*/
 
@@ -17,7 +18,7 @@ module.exports = app;
 
 // Ici,je définit une route de type GET
 // Ici, on gére les requête GET vers la page d'accueil
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
     res.end("Bonjour, je suis le nouveau serveur");
 });
 
@@ -73,10 +74,61 @@ app.post("/email", (req, res)=> {
      // ici, je fait "res.end" pour afficher le message "Notre email".
 });
 
+// Ici, je crée une route en utilisant la méthode de type "PUT"
 app.put("/telephone", (req, res) => {
     res.end("voici notre numero de telephone");
+    // Je fait "res.end" pour affichier le message "voici notre numero"
 });
 
-app.delete("/Bonjour", (req, res) => {
+/*app.delete("/Bonjour", (req, res) => {
     res.end("Bonjour bienvenu a notre page web");
+});*/
+
+// Middleware 1
+/*app.use((req, res, next) => {
+    console.log("Akori, za yeto");
 });
+
+// Middleware 2
+app.use((req, res) => {
+    console.log("coucou, je suis la");
+});*/
+
+// === API ===
+// format URL: localhost: 3002/api/nom
+app.get("/api/nom", (req, res, next) => {
+    const monObjet = [{
+        nom: "Abdou",
+        prenom: "Kamal",
+    }];
+    // je retourne l'objet "monObjet" sous format JSON et retourne le code 200
+    res.status(200).json(monObjet);
+});
+
+// format URL : localhost:3002/api/url
+app.get("/api/url", (req, res) => {
+    // je retourne une réponse de HTML et de status 200
+    res.writeHead(200, {'content-Type': 'text/html'});
+
+    res.write(req.url); // je récupére l'URL passé dans la requête
+
+    res.end(); // Fin de réponse
+});
+
+// format URL : localhost:3002/?annee=2024
+/* https://lpo-chirongui.ac-mayotte.fr/
+Analyse de l'URL :
+l'url de base : https://www.google.com
+l'url complet avec l'API '/search' : https://www.google.com/search
+l'url complet avec des paramétres. 
+Le mot-clé 'q' contient la valeur 'Chirongui' du paramétre.
+les paramétres sont précédés par le point d'interrogation '?'
+*/
+app.get("/:param", (req, res) => {
+    res.writeHead(200, {'content_Type': 'text/html'});
+    let param = req.query.annee;
+    res.end(param);
+
+    //let query = url.parse(req.url, true).query;
+    //let =resultatAffiche = query.annee;
+})
