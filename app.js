@@ -2,7 +2,7 @@
 // j'import express from "express";
 const express = require ("express");
 const url = require("url");
-
+const fs = require("fs"); // le module 
 // je crée l'application ExpressJs
 const app = express();
 
@@ -18,8 +18,14 @@ module.exports = app;
 
 // Ici,je définit une route de type GET
 // Ici, on gére les requête GET vers la page d'accueil
-/*app.get("/", (req, res) => {
-    res.end("Bonjour, je suis le nouveau serveur");
+app.get("/", (req, res) => {
+    // je précise le type et l'encodage du contenu de la reponse et du contenu
+    res.writeHead(200, {
+        "Content-Type":"text/html;charset=utf-8"
+    });
+    // le contenu de la réponse retournée et qui s'affiche sur le navigateur
+    res.write(" <b>Bonjour, je suis le nouveau serveur.</b> Je vie à Mayotte");
+    res.end();// Fin de réponse retournée par le serveur
 });
 
 //je veux crée la route "/Bonjour" de type GET.
@@ -49,8 +55,20 @@ app.listen(3001, () =>{
 
 // Ici, je crée un route "/accueil" de type GET.
 app.get("/accueil", (req, res) => {
-    res.end("Bienvenu dans notre page d'accuiel.");
-// ici, il va gére les requête GET vers, qui va s'affichier "Bienvenu etc..".
+    fs.readFile("accueil.html", (err,data) => {
+        // Traitement des erreures
+        // 1. il ya des  erreurs, alors on affichie
+        if(err) {
+            res.writeHead(404);
+            res.write("le fichie est introuvable.");
+        }else{
+            res.writeHead(200, {
+                "content-type":"text/html"})
+                res.write(data);
+            
+        }
+    });
+     res.end()// ici, il va gére les requête GET vers, qui va s'affichier "Bienvenu etc..".
 });
 
 // Ici, je crée une route en utilisant la méthode de type "GET".
@@ -124,10 +142,14 @@ l'url complet avec des paramétres.
 Le mot-clé 'q' contient la valeur 'Chirongui' du paramétre.
 les paramétres sont précédés par le point d'interrogation '?'
 */
+
+// Ici, c'est la requête
+// URL : localhost:3002/param?
 app.get("/:param", (req, res) => {
-    res.writeHead(200, {'content_Type': 'text/html'});
+    res.writeHead(200, {'Content_Type': 'text/html'});
     let param = req.query.annee;
-    res.end(param);
+    let param1 = req.query.mois;
+    res.end(param1 + ":" + param);
 
     //let query = url.parse(req.url, true).query;
     //let =resultatAffiche = query.annee;
